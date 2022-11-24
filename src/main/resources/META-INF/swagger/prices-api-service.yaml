@@ -1,0 +1,82 @@
+openapi: 3.0.0
+servers:
+- url: http://localhost:8080
+  description: Localhost Environment
+info:
+  version: "1.0.0"
+  title: prices-api-service
+  description: The API of Prices
+  contact:
+    name: luis perilla
+    email: luisperilla@gmail.com
+paths:
+  '/brands/{brandId}/products/{productId}/prices' :
+    get:
+      tags:
+        - Prices
+      description: returns the best price of product and brand
+      operationId: findPrices
+      parameters:
+        - in: path
+          name: brandId
+          required: true
+          description: The brand Id
+          schema:
+            type: integer
+            format: int32
+        - in: path
+          name: productId
+          required: true
+          description: The product Id
+          schema:
+            type: integer
+            format: int32
+        - in: query
+          name: applicationDate
+          description: Application Date
+          schema:
+            type: string
+            format: date-time
+      responses:
+        '200':
+          description: The best prices
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Price'
+components:
+  schemas:
+    Price:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+          description: The Price Id
+        startDate:
+          type: string
+          format: date-time
+          description: The start date of price
+          example: "2020-06-14T00:00:00"
+        endDate:
+          type: string
+          format: date-time
+          description: The end date of price
+          example: "2020-06-14T10:00:00"
+        brandId:
+          type: integer
+          format: int32
+          description: The Brand Id
+        productId:
+          type: integer
+          format: int32
+          description: The product Id
+        price:
+          type: number
+          format: double
+          description: The price
+          example: 35.50
+        currency:
+          type: string
+          description: The currency of price
+          example: EUR
